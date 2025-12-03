@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="version" content="v1.0.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>リンク集 & 便利ツール</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: white;
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .section {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .section h2 {
+        color: #667eea;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #667eea;
+        padding-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .links-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .link-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: white;
+        transition: transform 0.3s, box-shadow 0.3s;
+        display: block;
+        position: relative;
+      }
+
+      .link-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .link-card h3 {
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+      }
+
+      .link-card p {
+        font-size: 0.9rem;
+        opacity: 0.9;
+      }
+
+      .link-actions {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        gap: 5px;
+      }
+
+      .link-btn {
+        background: rgba(255, 255, 255, 0.3);
+        border: none;
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+        padding: 0;
+      }
+
+      .link-btn:hover {
+        background: rgba(255, 255, 255, 0.5);
+        transform: none;
+        box-shadow: none;
+      }
+
+      .add-link-btn {
+        background: rgba(102, 126, 234, 0.2);
+        border: 2px dashed #667eea;
+        color: #667eea;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+      }
+
+      .add-link-btn:hover {
+        background: rgba(102, 126, 234, 0.3);
+        transform: none;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal.show {
+        display: flex;
+      }
+
+      .modal-content {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .modal-content h3 {
+        color: #667eea;
+        margin-bottom: 20px;
+      }
+
+      .modal-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .modal-buttons button {
+        flex: 1;
+      }
+
+      .btn-cancel {
+        background: #999;
+      }
+
+      .btn-cancel:hover {
+        background: #777;
+      }
+
+      .btn-delete {
+        background: #e74c3c;
+      }
+
+      .btn-delete:hover {
+        background: #c0392b;
+      }
+
+      .tool-section {
+        margin-top: 20px;
+      }
+
+      .tool-group {
+        margin-bottom: 30px;
+      }
+
+      .tool-group h3 {
+        color: #764ba2;
+        margin-bottom: 15px;
+      }
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 1rem;
+        margin-bottom: 10px;
+        font-family: inherit;
+      }
+
+      input:focus,
+      textarea:focus,
+      select:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      .result {
+        margin-top: 15px;
+        padding: 15px;
+        background: #f5f5f5;
+        border-radius: 6px;
+        border-left: 4px solid #667eea;
+        display: none;
+      }
+
+      .result.show {
+        display: block;
+      }
+
+      .result pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔗 リンク集 & 便利ツール</h1>
+
+      <!-- リンク集セクション -->
+      <div class="section">
+        <h2>
+          <span>📚 よく使うリンク</span>
+          <button class="add-link-btn" onclick="showAddLinkModal()">
+            ＋ リンク追加
+          </button>
+        </h2>
+        <div class="links-grid" id="linksGrid"></div>
+      </div>
+
+      <!-- リンク追加/編集モーダル -->
+      <div class="modal" id="linkModal">
+        <div class="modal-content">
+          <h3 id="modalTitle">リンクを追加</h3>
+          <select id="linkEmoji">
+            <option value="🔗">🔗 リンク</option>
+            <option value="🔍">🔍 検索</option>
+            <option value="💻">💻 開発</option>
+            <option value="📖">📖 ドキュメント</option>
+            <option value="❓">❓ Q&A</option>
+            <option value="🎨">🎨 デザイン</option>
+            <option value="📱">📱 モバイル</option>
+            <option value="🛠️">🛠️ ツール</option>
+            <option value="📊">📊 データ</option>
+            <option value="🎮">🎮 ゲーム</option>
+            <option value="📺">📺 動画</option>
+            <option value="🎵">🎵 音楽</option>
+            <option value="📷">📷 写真</option>
+            <option value="🌐">🌐 Web</option>
+            <option value="💬">💬 チャット</option>
+            <option value="📧">📧 メール</option>
+            <option value="🏢">🏢 ビジネス</option>
+            <option value="🎓">🎓 教育</option>
+            <option value="📰">📰 ニュース</option>
+            <option value="🛒">🛒 ショッピング</option>
+            <option value="⚙️">⚙️ 設定</option>
+            <option value="🔒">🔒 セキュリティ</option>
+            <option value="📂">📂 ファイル</option>
+            <option value="☁️">☁️ クラウド</option>
+            <option value="⭐">⭐ お気に入り</option>
+          </select>
+          <input type="text" id="linkTitle" placeholder="タイトル" />
+          <input type="text" id="linkUrl" placeholder="URL" />
+          <textarea id="linkDescription" rows="2" placeholder="説明"></textarea>
+          <div class="modal-buttons">
+            <button class="btn-cancel" onclick="closeModal()">
+              キャンセル
+            </button>
+            <button onclick="saveLink()">保存</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 便利ツールセクション -->
+      <div class="section">
+        <h2>🛠️ 便利ツール</h2>
+
+        <div class="tool-section">
+          <!-- 文字数カウンター -->
+          <div class="tool-group">
+            <h3>📝 文字数カウンター</h3>
+            <textarea
+              id="charCountInput"
+              rows="4"
+              placeholder="テキストを入力してください..."
+            ></textarea>
+            <div class="result show" id="charCountResult">
+              文字数: <strong>0</strong> | 行数: <strong>0</strong>
+            </div>
+          </div>
+
+          <!-- Base64エンコード/デコード -->
+          <div class="tool-group">
+            <h3>🔐 Base64 エンコード/デコード</h3>
+            <textarea
+              id="base64Input"
+              rows="3"
+              placeholder="テキストを入力..."
+            ></textarea>
+            <button onclick="encodeBase64()">エンコード</button>
+            <button onclick="decodeBase64()">デコード</button>
+            <div class="result" id="base64Result"></div>
+          </div>
+
+          <!-- タイムスタンプ変換 -->
+          <div class="tool-group">
+            <h3>⏰ タイムスタンプ変換</h3>
+            <input
+              type="number"
+              id="timestampInput"
+              placeholder="Unix タイムスタンプ (例: 1638316800)"
+            />
+            <button onclick="convertTimestamp()">日時に変換</button>
+            <button onclick="getCurrentTimestamp()">現在時刻を取得</button>
+            <div class="result" id="timestampResult"></div>
+          </div>
+
+          <!-- URLエンコード/デコード -->
+          <div class="tool-group">
+            <h3>🔗 URL エンコード/デコード</h3>
+            <input type="text" id="urlInput" placeholder="URLを入力..." />
+            <button onclick="encodeURL()">エンコード</button>
+            <button onclick="decodeURL()">デコード</button>
+            <div class="result" id="urlResult"></div>
+          </div>
+
+          <!-- カラーコード変換 -->
+          <div class="tool-group">
+            <h3>🎨 カラーコード変換</h3>
+            <input type="color" id="colorPicker" value="#667eea" />
+            <button onclick="convertColor()">変換</button>
+            <div class="result show" id="colorResult">
+              HEX: <strong>#667eea</strong> | RGB:
+              <strong>rgb(102, 126, 234)</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ========== リンク管理 ==========
+      let links = [
+        {
+          emoji: "🔍",
+          title: "Google",
+          url: "https://www.google.com",
+          description: "検索エンジン",
+        },
+        {
+          emoji: "💻",
+          title: "GitHub",
+          url: "https://github.com",
+          description: "コード管理",
+        },
+        {
+          emoji: "❓",
+          title: "Stack Overflow",
+          url: "https://stackoverflow.com",
+          description: "技術Q&A",
+        },
+        {
+          emoji: "📖",
+          title: "MDN Web Docs",
+          url: "https://developer.mozilla.org",
+          description: "Web技術リファレンス",
+        },
+      ];
+
+      let editingIndex = -1;
+
+      // ローカルストレージから読み込み
+      function loadLinks() {
+        const saved = localStorage.getItem("myLinks");
+        if (saved) {
+          links = JSON.parse(saved);
+        }
+        renderLinks();
+      }
+
+      // ローカルストレージに保存
+      function saveLinks() {
+        localStorage.setItem("myLinks", JSON.stringify(links));
+      }
+
+      // リンクを表示
+      function renderLinks() {
+        const grid = document.getElementById("linksGrid");
+        grid.innerHTML = links
+          .map(
+            (link, index) => `
+          <a href="${link.url}" class="link-card" target="_blank">
+            <div class="link-actions" onclick="event.preventDefault(); event.stopPropagation();">
+              <button class="link-btn" onclick="editLink(${index})" title="編集">✏️</button>
+              <button class="link-btn" onclick="deleteLink(${index})" title="削除">🗑️</button>
+            </div>
+            <h3>${link.emoji} ${link.title}</h3>
+            <p>${link.description}</p>
+          </a>
+        `
+          )
+          .join("");
+      }
+
+      // モーダルを開く（追加）
+      function showAddLinkModal() {
+        editingIndex = -1;
+        document.getElementById("modalTitle").textContent = "リンクを追加";
+        document.getElementById("linkEmoji").value = "";
+        document.getElementById("linkTitle").value = "";
+        document.getElementById("linkUrl").value = "";
+        document.getElementById("linkDescription").value = "";
+        document.getElementById("linkModal").classList.add("show");
+      }
+
+      // モーダルを開く（編集）
+      function editLink(index) {
+        editingIndex = index;
+        const link = links[index];
+        document.getElementById("modalTitle").textContent = "リンクを編集";
+        document.getElementById("linkEmoji").value = link.emoji;
+        document.getElementById("linkTitle").value = link.title;
+        document.getElementById("linkUrl").value = link.url;
+        document.getElementById("linkDescription").value = link.description;
+        document.getElementById("linkModal").classList.add("show");
+      }
+
+      // モーダルを閉じる
+      function closeModal() {
+        document.getElementById("linkModal").classList.remove("show");
+      }
+
+      // リンクを保存
+      function saveLink() {
+        const emoji = document.getElementById("linkEmoji").value || "🔗";
+        const title = document.getElementById("linkTitle").value.trim();
+        const url = document.getElementById("linkUrl").value.trim();
+        const description = document
+          .getElementById("linkDescription")
+          .value.trim();
+
+        if (!title || !url) {
+          alert("タイトルとURLは必須です");
+          return;
+        }
+
+        const link = { emoji, title, url, description };
+
+        if (editingIndex >= 0) {
+          links[editingIndex] = link;
+        } else {
+          links.push(link);
+        }
+
+        saveLinks();
+        renderLinks();
+        closeModal();
+      }
+
+      // リンクを削除
+      function deleteLink(index) {
+        if (confirm("このリンクを削除しますか？")) {
+          links.splice(index, 1);
+          saveLinks();
+          renderLinks();
+        }
+      }
+
+      // モーダル外クリックで閉じる（mousedownではなくclickで判定）
+      document
+        .getElementById("linkModal")
+        .addEventListener("mousedown", (e) => {
+          if (e.target.id === "linkModal") {
+            // マウスダウンとマウスアップの両方が背景上で発生した場合のみ閉じる
+            const target = e.target;
+            document.getElementById("linkModal").addEventListener(
+              "mouseup",
+              function closeOnMouseUp(upEvent) {
+                if (
+                  upEvent.target.id === "linkModal" &&
+                  target.id === "linkModal"
+                ) {
+                  closeModal();
+                }
+                document
+                  .getElementById("linkModal")
+                  .removeEventListener("mouseup", closeOnMouseUp);
+              },
+              { once: true }
+            );
+          }
+        });
+
+      // 初期化
+      loadLinks();
+
+      // ========== 便利ツール ==========
+      // 文字数カウンター
+      document
+        .getElementById("charCountInput")
+        .addEventListener("input", function (e) {
+          const text = e.target.value;
+          const charCount = text.length;
+          const lineCount = text.split("\n").length;
+          document.getElementById(
+            "charCountResult"
+          ).innerHTML = `文字数: <strong>${charCount}</strong> | 行数: <strong>${lineCount}</strong>`;
+        });
+
+      // Base64エンコード/デコード
+      function encodeBase64() {
+        const input = document.getElementById("base64Input").value;
+        try {
+          const encoded = btoa(unescape(encodeURIComponent(input)));
+          showResult(
+            "base64Result",
+            `エンコード結果:<br><pre>${encoded}</pre>`
+          );
+        } catch (e) {
+          showResult("base64Result", "エラー: 無効な入力です");
+        }
+      }
+
+      function decodeBase64() {
+        const input = document.getElementById("base64Input").value;
+        try {
+          const decoded = decodeURIComponent(escape(atob(input)));
+          showResult("base64Result", `デコード結果:<br><pre>${decoded}</pre>`);
+        } catch (e) {
+          showResult("base64Result", "エラー: 無効なBase64文字列です");
+        }
+      }
+
+      // タイムスタンプ変換
+      function convertTimestamp() {
+        const timestamp = document.getElementById("timestampInput").value;
+        if (!timestamp) {
+          showResult("timestampResult", "タイムスタンプを入力してください");
+          return;
+        }
+        const date = new Date(parseInt(timestamp) * 1000);
+        showResult(
+          "timestampResult",
+          `日時: <strong>${date.toLocaleString("ja-JP")}</strong>`
+        );
+      }
+
+      function getCurrentTimestamp() {
+        const now = Math.floor(Date.now() / 1000);
+        const date = new Date();
+        document.getElementById("timestampInput").value = now;
+        showResult(
+          "timestampResult",
+          `現在のタイムスタンプ: <strong>${now}</strong><br>日時: <strong>${date.toLocaleString(
+            "ja-JP"
+          )}</strong>`
+        );
+      }
+
+      // URLエンコード/デコード
+      function encodeURL() {
+        const input = document.getElementById("urlInput").value;
+        const encoded = encodeURIComponent(input);
+        showResult("urlResult", `エンコード結果:<br><pre>${encoded}</pre>`);
+      }
+
+      function decodeURL() {
+        const input = document.getElementById("urlInput").value;
+        try {
+          const decoded = decodeURIComponent(input);
+          showResult("urlResult", `デコード結果:<br><pre>${decoded}</pre>`);
+        } catch (e) {
+          showResult("urlResult", "エラー: 無効なURLエンコード文字列です");
+        }
+      }
+
+      // カラーコード変換
+      document
+        .getElementById("colorPicker")
+        .addEventListener("input", convertColor);
+
+      function convertColor() {
+        const hex = document.getElementById("colorPicker").value;
+        const r = parseInt(hex.substr(1, 2), 16);
+        const g = parseInt(hex.substr(3, 2), 16);
+        const b = parseInt(hex.substr(5, 2), 16);
+        document.getElementById(
+          "colorResult"
+        ).innerHTML = `HEX: <strong>${hex.toUpperCase()}</strong> | RGB: <strong>rgb(${r}, ${g}, ${b})</strong>`;
+      }
+
+      // 結果表示ヘルパー
+      function showResult(id, html) {
+        const element = document.getElementById(id);
+        element.innerHTML = html;
+        element.classList.add("show");
+      }
+    </script>
+  </body>
+</html>
