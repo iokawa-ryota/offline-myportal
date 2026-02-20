@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
@@ -13,7 +13,8 @@
       }
 
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
           "Helvetica Neue", Arial, sans-serif;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
@@ -64,7 +65,9 @@
         border-radius: 8px;
         text-decoration: none;
         color: white;
-        transition: transform 0.3s, box-shadow 0.3s;
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
         display: block;
         position: relative;
       }
@@ -112,6 +115,168 @@
         background: rgba(255, 255, 255, 0.5);
         transform: none;
         box-shadow: none;
+      }
+
+      .todo-input-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+        align-items: center;
+      }
+
+      .todo-input-row input {
+        margin-bottom: 0;
+      }
+
+      .todo-input-row button {
+        white-space: nowrap;
+        padding: 12px 20px;
+      }
+
+      .todo-list {
+        list-style: none;
+      }
+
+      .todo-title-row {
+        justify-content: flex-start !important;
+        gap: 12px;
+      }
+
+      .todo-history-btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+      }
+
+      .todo-item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        padding: 12px;
+        background: #f5f6ff;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        text-align: left;
+      }
+
+      .todo-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .todo-checkbox {
+        width: 22px;
+        height: 22px;
+        min-width: 22px;
+        min-height: 22px;
+        margin: 0;
+        cursor: pointer;
+      }
+
+      .todo-text {
+        flex: 1;
+        max-width: 1000px;
+        overflow-wrap: anywhere;
+      }
+
+      .todo-text.done {
+        text-decoration: line-through;
+        opacity: 0.6;
+      }
+
+      .todo-inline-input {
+        margin-bottom: 0;
+        padding: 8px 10px;
+        font-size: 0.95rem;
+      }
+
+      .todo-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto;
+      }
+
+      .todo-edit {
+        background: #667eea;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 10px;
+        cursor: pointer;
+        font-size: 0.85rem;
+      }
+
+      .todo-edit:hover {
+        background: #5a6fd6;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .todo-save {
+        background: #2ecc71;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 10px;
+        cursor: pointer;
+        font-size: 0.85rem;
+      }
+
+      .todo-save:hover {
+        background: #27ae60;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .todo-cancel {
+        background: #999;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 10px;
+        cursor: pointer;
+        font-size: 0.85rem;
+      }
+
+      .todo-cancel:hover {
+        background: #777;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .todo-delete {
+        background: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 10px;
+        cursor: pointer;
+        font-size: 0.85rem;
+      }
+
+      .todo-delete:hover {
+        background: #c0392b;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .todo-completed-panel {
+        margin-top: 12px;
+        display: none;
+      }
+
+      .todo-completed-panel.show {
+        display: block;
+      }
+
+      .todo-empty {
+        color: #666;
+        font-size: 0.9rem;
+        padding: 8px 0;
       }
 
       .add-link-btn {
@@ -227,7 +392,9 @@
         border-radius: 6px;
         font-size: 1rem;
         cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
       }
 
       button:hover {
@@ -261,6 +428,27 @@
   <body>
     <div class="container">
       <h1>🔗 リンク集 & 便利ツール</h1>
+
+      <div class="section">
+        <h2 class="todo-title-row">
+          <span>✅ TODOリスト</span>
+          <button
+            class="todo-history-btn"
+            id="toggleCompletedBtn"
+            onclick="toggleCompletedPanel()"
+          >
+            完了したタスク
+          </button>
+        </h2>
+        <div class="todo-input-row">
+          <input type="text" id="todoInput" placeholder="やることを入力..." />
+          <button onclick="addTodo()">追加</button>
+        </div>
+        <ul class="todo-list" id="todoList"></ul>
+        <div class="todo-completed-panel" id="completedPanel">
+          <ul class="todo-list" id="completedTodoList"></ul>
+        </div>
+      </div>
 
       <!-- リンク集セクション -->
       <div class="section">
@@ -414,6 +602,242 @@
 
       let editingIndex = -1;
 
+      let todos = [
+        { text: "今日やることを整理する", done: false },
+        { text: "重要リンクを追加する", done: false },
+      ];
+      let isCompletedPanelVisible = false;
+      let editingTodoIndex = -1;
+
+      function loadTodos() {
+        const saved = localStorage.getItem("myTodos");
+        if (saved) {
+          todos = JSON.parse(saved);
+        }
+        renderTodos();
+      }
+
+      function saveTodos() {
+        localStorage.setItem("myTodos", JSON.stringify(todos));
+      }
+
+      function escapeHtml(value) {
+        return value
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#39;");
+      }
+
+      function renderTodos() {
+        const list = document.getElementById("todoList");
+        const activeTodoItems = todos
+          .map((todo, index) => ({ ...todo, index }))
+          .filter((todo) => !todo.done);
+
+        if (activeTodoItems.length === 0) {
+          list.innerHTML =
+            '<li class="todo-empty">未完了のタスクはありません</li>';
+          return;
+        }
+
+        list.innerHTML = activeTodoItems
+          .map(
+            (todo) => `
+          <li class="todo-item">
+            <div class="todo-left">
+              <input
+                type="checkbox"
+                class="todo-checkbox"
+                ${editingTodoIndex === todo.index ? "disabled" : `onchange="toggleTodo(${todo.index})"`}
+              />
+              ${
+                editingTodoIndex === todo.index
+                  ? `<input
+                      id="todoEditInput-${todo.index}"
+                      class="todo-inline-input"
+                      type="text"
+                      value="${escapeHtml(todo.text)}"
+                      onkeydown="handleTodoInlineKeydown(event, ${todo.index})"
+                    />`
+                  : `<span class="todo-text">${escapeHtml(todo.text)}</span>`
+              }
+            </div>
+            <div class="todo-actions">
+              ${
+                editingTodoIndex === todo.index
+                  ? `<button class="todo-save" onclick="saveTodoEdit(${todo.index})">保存</button>
+                     <button class="todo-cancel" onclick="cancelTodoEdit()">キャンセル</button>`
+                  : `<button class="todo-edit" onclick="startEditTodo(${todo.index})">修正</button>
+                     <button class="todo-delete" onclick="deleteTodo(${todo.index})">削除</button>`
+              }
+            </div>
+          </li>
+        `,
+          )
+          .join("");
+      }
+
+      function renderCompletedTodos() {
+        const completedList = document.getElementById("completedTodoList");
+        const completedTodoItems = todos
+          .map((todo, index) => ({ ...todo, index }))
+          .filter((todo) => todo.done);
+
+        if (completedTodoItems.length === 0) {
+          completedList.innerHTML =
+            '<li class="todo-empty">完了済みタスクはありません</li>';
+          return;
+        }
+
+        completedList.innerHTML = completedTodoItems
+          .map(
+            (todo) => `
+          <li class="todo-item">
+            <div class="todo-left">
+              <input type="checkbox" class="todo-checkbox" checked disabled />
+              ${
+                editingTodoIndex === todo.index
+                  ? `<input
+                      id="todoEditInput-${todo.index}"
+                      class="todo-inline-input"
+                      type="text"
+                      value="${escapeHtml(todo.text)}"
+                      onkeydown="handleTodoInlineKeydown(event, ${todo.index})"
+                    />`
+                  : `<span class="todo-text done">${escapeHtml(todo.text)}</span>`
+              }
+            </div>
+            <div class="todo-actions">
+              ${
+                editingTodoIndex === todo.index
+                  ? `<button class="todo-save" onclick="saveTodoEdit(${todo.index})">保存</button>
+                     <button class="todo-cancel" onclick="cancelTodoEdit()">キャンセル</button>`
+                  : `<button class="todo-edit" onclick="startEditTodo(${todo.index})">修正</button>
+                     <button class="todo-delete" onclick="deleteTodo(${todo.index})">削除</button>`
+              }
+            </div>
+          </li>
+        `,
+          )
+          .join("");
+      }
+
+      function addTodo() {
+        const input = document.getElementById("todoInput");
+        const text = input.value.trim();
+
+        if (!text) {
+          return;
+        }
+
+        todos.push({ text, done: false });
+
+        input.value = "";
+        saveTodos();
+        renderTodos();
+        if (isCompletedPanelVisible) {
+          renderCompletedTodos();
+        }
+      }
+
+      function startEditTodo(index) {
+        editingTodoIndex = index;
+        renderTodos();
+        if (isCompletedPanelVisible) {
+          renderCompletedTodos();
+        }
+
+        const input = document.getElementById(`todoEditInput-${index}`);
+        if (input) {
+          input.focus();
+          input.setSelectionRange(input.value.length, input.value.length);
+        }
+      }
+
+      function saveTodoEdit(index) {
+        const editInput = document.getElementById(`todoEditInput-${index}`);
+        if (!editInput) {
+          return;
+        }
+
+        const text = editInput.value.trim();
+        if (!text) {
+          return;
+        }
+
+        todos[index].text = text;
+        editingTodoIndex = -1;
+        saveTodos();
+        renderTodos();
+        if (isCompletedPanelVisible) {
+          renderCompletedTodos();
+        }
+      }
+
+      function cancelTodoEdit() {
+        editingTodoIndex = -1;
+        renderTodos();
+        if (isCompletedPanelVisible) {
+          renderCompletedTodos();
+        }
+      }
+
+      function handleTodoInlineKeydown(event, index) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          saveTodoEdit(index);
+        }
+        if (event.key === "Escape") {
+          event.preventDefault();
+          cancelTodoEdit();
+        }
+      }
+
+      function toggleTodo(index) {
+        if (editingTodoIndex === index) {
+          editingTodoIndex = -1;
+        }
+        todos[index].done = !todos[index].done;
+        saveTodos();
+        renderTodos();
+        renderCompletedTodos();
+      }
+
+      function deleteTodo(index) {
+        todos.splice(index, 1);
+        if (editingTodoIndex === index) {
+          editingTodoIndex = -1;
+        } else if (editingTodoIndex > index) {
+          editingTodoIndex -= 1;
+        }
+        saveTodos();
+        renderTodos();
+        renderCompletedTodos();
+      }
+
+      function toggleCompletedPanel() {
+        const panel = document.getElementById("completedPanel");
+        const button = document.getElementById("toggleCompletedBtn");
+        isCompletedPanelVisible = !isCompletedPanelVisible;
+
+        if (isCompletedPanelVisible) {
+          panel.classList.add("show");
+          button.textContent = "完了したタスクを閉じる";
+          renderCompletedTodos();
+        } else {
+          panel.classList.remove("show");
+          button.textContent = "完了したタスク";
+        }
+      }
+
+      document.getElementById("todoInput").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          addTodo();
+        }
+      });
+
       // ローカルストレージから読み込み
       function loadLinks() {
         const saved = localStorage.getItem("myLinks");
@@ -442,7 +866,7 @@
             <h3>${link.emoji} ${link.title}</h3>
             <p>${link.description}</p>
           </a>
-        `
+        `,
           )
           .join("");
       }
@@ -531,12 +955,13 @@
                   .getElementById("linkModal")
                   .removeEventListener("mouseup", closeOnMouseUp);
               },
-              { once: true }
+              { once: true },
             );
           }
         });
 
       // 初期化
+      loadTodos();
       loadLinks();
 
       // ========== 便利ツール ==========
@@ -547,9 +972,8 @@
           const text = e.target.value;
           const charCount = text.length;
           const lineCount = text.split("\n").length;
-          document.getElementById(
-            "charCountResult"
-          ).innerHTML = `文字数: <strong>${charCount}</strong> | 行数: <strong>${lineCount}</strong>`;
+          document.getElementById("charCountResult").innerHTML =
+            `文字数: <strong>${charCount}</strong> | 行数: <strong>${lineCount}</strong>`;
         });
 
       // Base64エンコード/デコード
@@ -559,7 +983,7 @@
           const encoded = btoa(unescape(encodeURIComponent(input)));
           showResult(
             "base64Result",
-            `エンコード結果:<br><pre>${encoded}</pre>`
+            `エンコード結果:<br><pre>${encoded}</pre>`,
           );
         } catch (e) {
           showResult("base64Result", "エラー: 無効な入力です");
@@ -586,7 +1010,7 @@
         const date = new Date(parseInt(timestamp) * 1000);
         showResult(
           "timestampResult",
-          `日時: <strong>${date.toLocaleString("ja-JP")}</strong>`
+          `日時: <strong>${date.toLocaleString("ja-JP")}</strong>`,
         );
       }
 
@@ -597,8 +1021,8 @@
         showResult(
           "timestampResult",
           `現在のタイムスタンプ: <strong>${now}</strong><br>日時: <strong>${date.toLocaleString(
-            "ja-JP"
-          )}</strong>`
+            "ja-JP",
+          )}</strong>`,
         );
       }
 
@@ -629,9 +1053,8 @@
         const r = parseInt(hex.substr(1, 2), 16);
         const g = parseInt(hex.substr(3, 2), 16);
         const b = parseInt(hex.substr(5, 2), 16);
-        document.getElementById(
-          "colorResult"
-        ).innerHTML = `HEX: <strong>${hex.toUpperCase()}</strong> | RGB: <strong>rgb(${r}, ${g}, ${b})</strong>`;
+        document.getElementById("colorResult").innerHTML =
+          `HEX: <strong>${hex.toUpperCase()}</strong> | RGB: <strong>rgb(${r}, ${g}, ${b})</strong>`;
       }
 
       // 結果表示ヘルパー
